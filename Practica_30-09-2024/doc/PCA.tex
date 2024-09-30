@@ -1,4 +1,4 @@
-\section[PCA]{PCA}
+\section[PCA]{Principal Components Analysis}
 En el código se hizo uso tanto del cálculo manual de los PCA como de los métodos incluidos en la biblioteca Sckit.
 
 \subsection[Manual]{Método manual}
@@ -113,3 +113,21 @@ Una vez calculados los PCA, los datos se llevan al espacio bidimensional. La gr�
 Este método está incluido en la \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{biblioteca de Scikit} y se tiene que importar explícitamente.
 
 Los resultados que arroja son los siguientes:
+\begin{center}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.67]{Auto_PCA_Scatter.png}
+        \caption{Diagrama de dispersión de los datos originales con los PCA generados por Sckit}
+    \end{figure}
+\end{center}
+\vskip 10cm
+\subsection[Comparación]{Comparación}
+\begin{center}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.32]{Auto_PCA_Scatter.png}
+        \includegraphics[scale=0.32]{Manual_PCA_Scatter.png}
+        \caption{Comparación de diagramas de dispersión calculados (izquierda) y generados (derecha)}
+    \end{figure}
+\end{center}
+Como se puede ver, gran parte de los datos mantienen su posición en ambas gráficas, siendo que aquellos que difieren lo hacen a causa de los distintos pesos asignados a cada dimensión en los componentes generados o calculados.s
