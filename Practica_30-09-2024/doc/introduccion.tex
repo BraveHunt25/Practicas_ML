@@ -1,0 +1,16 @@
+\section[Introducción]{Introducción}
+En el presente reporte se aplican dos técnicas de reducción y agrupación de datos: el Análisis de Componentes Principales (PCA) y los Mapas Autoorganizados (SOM, por sus siglas en inglés), empleando dos conjuntos de datos clásicos: \href{https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html#sklearn.datasets.load_wine}{Wine} y \href{https://archive.ics.uci.edu/dataset/42/glass+identification}{Glass Identification}. Estas técnicas se utilizan para obtener una mejor comprensión de las características subyacentes en los datos, permitiendo simplificar la representación de los mismos y visualizar cómo se distribuyen y agrupan en espacios de menor dimensionalidad.
+
+El PCA es una técnica que busca proyectar los datos originales en un nuevo espacio de menor dimensión, capturando la mayor parte de la varianza de los datos. Por su parte, los SOM son redes neuronales no supervisadas que organizan los datos en un mapa bidimensional, agrupándolos de acuerdo con similitudes intrínsecas.
+
+En este reporte mostraremos resultados con estas técnicas para identificar patrones y relaciones en los datos y qué interpretación se puede hacer a partir de los resultados visuales y numéricos generados.
+
+\subsection[Wine]{Dataset Wine}
+Del inglés: "Este es uno de los datasets más tempranos usado en la literatura en métodos de clasificación y ampliamente usado en estadística y aprendizaje máquina. El set de datos contiene 3 clases de 50 instancias cada uno, donde cada clase corresponde a un tipo de planta de iris. Una clase es linealmente independiente de otros 2; los otros no son linealmente independientes entre sí".
+
+Este dataset se incluye en los \href{https://scikit-learn.org/stable/datasets/toy_dataset.html}{datasets de práctica de la biblioteca Sckit} y, originalmente, en el \href{https://archive.ics.uci.edu/dataset/53/iris}{banco de datasets de la UCI}.
+
+\subsection[short]{Dataset Glass Identification}
+Del inglés: "Del Servicio de Ciencia Forense de los EEUU; 6 tipos de vidrio; definidos en términos de su contenido de óxido (p.e. Na, Fe, K, etc)".
+
+Este dataset se encuentra disponible en el \href{https://archive.ics.uci.edu/dataset/42/glass+identification}{banco de datasets de la UCI}.
