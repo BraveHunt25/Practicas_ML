@@ -2,7 +2,7 @@ import numpy as np
 import os
 import pandas as pd
 from pandas.core.frame import DataFrame
-from collections import defaultdict
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split, StratifiedKFold, LeaveOneOut
 
 import numpy as np
@@ -71,43 +71,52 @@ if __name__ == '__main__':
     # Para iris
     X: DataFrame = iris.drop(columns='class')
     Y: DataFrame = iris['class']
-    print(X)
-    print(Y)
+    accuracies: list = []
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, stratify=Y, random_state=42)
     clasificador: NaiveBayesClassifier = NaiveBayesClassifier()
     clasificador.fit(X_train, Y_train)
     predicciones = clasificador.predict(X_test)
-    print("Predicciones:\tValores esperados:\n")
-    for prediccion, valor in zip(predicciones, Y_test):
-        print(prediccion, valor, prediccion==valor, sep='\t')
+    accuracy = np.mean(predicciones == Y_test)
+    accuracies.append(accuracy)
+    print("Iris - Estratificado")
+    conf_matrix = confusion_matrix(Y_test, predicciones)
+    print("Matriz de Confusión:\n", conf_matrix)
+    print(f"Precisión: {accuracy}\n")
+    print(f"Precisión media (método Estratificado): {np.mean(accuracies)}\n")
 
     print('-'*100)
     # Para wine
     X = wine.drop(columns='Class')
     Y = wine['Class']
-    print(X)
-    print(Y)
+    accuracies: list = []
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, stratify=Y, random_state=42)
     clasificador: NaiveBayesClassifier = NaiveBayesClassifier()
     clasificador.fit(X_train, Y_train)
     predicciones = clasificador.predict(X_test)
-    print("Predicciones:\tValores esperados:\n")
-    for prediccion, valor in zip(predicciones, Y_test):
-        print(prediccion, valor, prediccion==valor, sep='\t')
+    accuracy = np.mean(predicciones == Y_test)
+    accuracies.append(accuracy)
+    print("Wine - Estratificado")
+    conf_matrix = confusion_matrix(Y_test, predicciones)
+    print("Matriz de Confusión:\n", conf_matrix)
+    print(f"Precisión: {accuracy}\n")
+    print(f"Precisión media (método Estratificado): {np.mean(accuracies)}\n")
 
     print('-'*100)
     # Para mushroom
     X = mushroom.drop(columns='class')
     Y = mushroom['class']
-    print(X)
-    print(Y)
+    accuracies: list = []
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, stratify=Y, random_state=42)
     clasificador: NaiveBayesClassifier = NaiveBayesClassifier()
     clasificador.fit(X_train, Y_train)
     predicciones = clasificador.predict(X_test)
-    print("Predicciones:\tValores esperados:\n")
-    for prediccion, valor in zip(predicciones, Y_test):
-        print(prediccion, valor, prediccion==valor, sep='\t')
+    accuracy = np.mean(predicciones == Y_test)
+    accuracies.append(accuracy)
+    print("Mushroom - Estratificado")
+    conf_matrix = confusion_matrix(Y_test, predicciones)
+    print("Matriz de Confusión:\n", conf_matrix)
+    print(f"Precisión: {accuracy}\n")
+    print(f"Precisión media (método Estratificado): {np.mean(accuracies)}\n")
 
     '''Con método de 10-fold cross-validation'''
     cross_validation: StratifiedKFold = StratifiedKFold(n_splits=10)
@@ -116,7 +125,8 @@ if __name__ == '__main__':
     # Para iris
     X: DataFrame = iris.drop(columns='class')
     Y: DataFrame = iris['class']
-    accuracies: list = []
+    accuracies = []
+    matrices_confusion = []
     for train_index, test_index in cross_validation.split(X, Y):
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -133,13 +143,20 @@ if __name__ == '__main__':
         accuracy = np.mean(predicciones == Y_test)
         accuracies.append(accuracy)
 
-    print(f"Iris\nPrecisión media: {np.mean(accuracies)}")
+        conf_matrix = confusion_matrix(Y_test, predicciones)
+        matrices_confusion.append(conf_matrix)
+
+    print(f"Iris - 10-fold Cross-Validation\nPrecisión media: {np.mean(accuracies)}")
     print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+    print("Matrices de Confusión por Fold:")
+    for idx, matrix in enumerate(matrices_confusion):
+        print(f"Fold {idx + 1}:\n{matrix}\n")
 
     # Para wine
     X = wine.drop(columns='Class')
     Y = wine['Class']
     accuracies = []
+    matrices_confusion = []
     for train_index, test_index in cross_validation.split(X, Y):
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -156,13 +173,20 @@ if __name__ == '__main__':
         accuracy = np.mean(predicciones == Y_test)
         accuracies.append(accuracy)
 
-    print(f"Wine\nPrecisión media: {np.mean(accuracies)}")
+        conf_matrix = confusion_matrix(Y_test, predicciones)
+        matrices_confusion.append(conf_matrix)
+
+    print(f"Wine - 10-fold Cross-Validation\nPrecisión media: {np.mean(accuracies)}")
     print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+    print("Matrices de Confusión por Fold:")
+    for idx, matrix in enumerate(matrices_confusion):
+        print(f"Fold {idx + 1}:\n{matrix}\n")
 
     # Para mushroom
     X = mushroom.drop(columns='class')
     Y = mushroom['class']
     accuracies = []
+    matrices_confusion = []
     for train_index, test_index in cross_validation.split(X, Y):
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -179,8 +203,14 @@ if __name__ == '__main__':
         accuracy = np.mean(predicciones == Y_test)
         accuracies.append(accuracy)
 
-    print(f"Mushroom\nPrecisión media: {np.mean(accuracies)}")
+        conf_matrix = confusion_matrix(Y_test, predicciones)
+        matrices_confusion.append(conf_matrix)
+
+    print(f"Mushroom - 10-fold Cross-Validation\nPrecisión media: {np.mean(accuracies)}")
     print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+    print("Matrices de Confusión por Fold:")
+    for idx, matrix in enumerate(matrices_confusion):
+        print(f"Fold {idx + 1}:\n{matrix}\n")
 
     '''Con método Leave-One-Out'''
     leave_one_out: LeaveOneOut = LeaveOneOut()
@@ -190,6 +220,7 @@ if __name__ == '__main__':
     X: DataFrame = iris.drop(columns='class')
     Y: DataFrame = iris['class']
     accuracies: list = []
+    global_conf_matrix = np.zeros((len(np.unique(Y)), len(np.unique(Y))))  # Matriz de confusión global acumulada
     for train_index, test_index in leave_one_out.split(X, Y):
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -205,13 +236,19 @@ if __name__ == '__main__':
         accuracy = np.mean(predicciones == Y_test)
         accuracies.append(accuracy)
 
-    print(f"Iris\nPrecisión media: {np.mean(accuracies)}")
-    print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+        conf_matrix = confusion_matrix([Y_test.iloc[0]], [predicciones[0]], labels=np.unique(Y))
+        global_conf_matrix += conf_matrix
 
+    print(f"Iris - Leave-One-Out\nPrecisión media: {np.mean(accuracies)}")
+    print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+    print("Matriz de Confusión Global Acumulada:")
+    print(global_conf_matrix)
+   
     # Para wine
     X = wine.drop(columns='Class')
     Y = wine['Class']
     accuracies = []
+    global_conf_matrix = np.zeros((len(np.unique(Y)), len(np.unique(Y))))  # Matriz de confusión global acumulada
     for train_index, test_index in leave_one_out.split(X, Y):
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -227,13 +264,19 @@ if __name__ == '__main__':
         accuracy = np.mean(predicciones == Y_test)
         accuracies.append(accuracy)
 
-    print(f"Wine\nPrecisión media: {np.mean(accuracies)}")
+        conf_matrix = confusion_matrix([Y_test.iloc[0]], [predicciones[0]], labels=np.unique(Y))
+        global_conf_matrix += conf_matrix
+
+    print(f"Wine - Leave-One-Out\nPrecisión media: {np.mean(accuracies)}")
     print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+    print("Matriz de Confusión Global Acumulada:")
+    print(global_conf_matrix)
 
     # Para mushroom
     X = mushroom.drop(columns='class')
     Y = mushroom['class']
     accuracies = []
+    global_conf_matrix = np.zeros((len(np.unique(Y)), len(np.unique(Y))))  # Matriz de confusión global acumulada
     for train_index, test_index in leave_one_out.split(X, Y):
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -249,5 +292,10 @@ if __name__ == '__main__':
         accuracy = np.mean(predicciones == Y_test)
         accuracies.append(accuracy)
 
-    print(f"Mushroom\nPrecisión media: {np.mean(accuracies)}")
+        conf_matrix = confusion_matrix([Y_test.iloc[0]], [predicciones[0]], labels=np.unique(Y))
+        global_conf_matrix += conf_matrix
+
+    print(f"Mushroom - Leave-One-Out\nPrecisión media: {np.mean(accuracies)}")
     print(f"Desviación estándar de la precisión: {np.std(accuracies)}")
+    print("Matriz de Confusión Global Acumulada:")
+    print(global_conf_matrix)
