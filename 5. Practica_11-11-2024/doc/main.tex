@@ -49,7 +49,7 @@
                         Profesor:  \\  Andres Garcia Floriano \\
                         Alumno: \\ Hernández Jiménez Erick Yael \\ Patiño Flores Samuel \\ Robert Garayzar Arturo \\ 
                         5BV1 \\ 
-                        Practica:  \\ Clasificador Bayesiano Ingenuo }}}
+                        Practica:  \\ SMOTE y Perceptrón Simple }}}
         \end{center}
         \end{spacing}       
     \end{titlepage}
@@ -63,37 +63,24 @@
     \tableofcontents
     \newpage
     \section{Introducción}
-    \subsection{Clasificador Bayesiano}
-    El \textbf{clasificador bayesiano} es un tipo de modelo de aprendizaje automático basado en el teorema de Bayes, un principio fundamental de la teoría de probabilidad que describe la probabilidad de un evento basado en el conocimiento previo de condiciones relacionadas con ese evento. En términos simples, el clasificador bayesiano determina la probabilidad de que una instancia pertenezca a una clase específica dado un conjunto de características observadas. Esta probabilidad se calcula combinando las probabilidades de las características con las probabilidades a priori de las clases. 
+    \subsection{SMOTE}
+    El \textbf{SMOTE} (Synthetic Minority Over-sampling Technique) es una técnica de sobremuestreo ampliamente utilizada en el ámbito del aprendizaje automático para abordar el problema del desequilibrio de clases en conjuntos de datos de clasificación. Este desbalance ocurre cuando una de las clases está representada de manera considerablemente menor en comparación con las demás, lo que puede sesgar el desempeño de los modelos predictivos hacia la clase mayoritaria, resultando en un rendimiento deficiente al identificar correctamente instancias de la clase minoritaria.
 
-    Matemáticamente, el teorema de Bayes se expresa como:
+    La técnica SMOTE se diferencia de métodos más simples, como la replicación de instancias, al generar nuevos ejemplos sintéticos en lugar de duplicar observaciones existentes. Para ello, selecciona un punto de la clase minoritaria y, a partir de sus vecinos más cercanos, crea ejemplos sintéticos interpolando valores en el espacio de características. De esta manera, SMOTE expande de manera más robusta el espacio ocupado por la clase minoritaria, mejorando la representatividad de esta en el conjunto de datos y reduciendo el sesgo hacia la clase mayoritaria.
+    
+    El uso de SMOTE es común en tareas de clasificación donde el equilibrio entre las clases resulta crítico para la precisión global del modelo, como en la detección de fraudes, el diagnóstico médico y otras áreas donde la identificación precisa de clases raras o menos representadas puede ser crucial.
+    
+\subsection{Perceptrón Simple}
 
-    \[
-    P(C|X) = \frac{P(X|C) \cdot P(C)}{P(X)}
-    \]
+El \textbf{Perceptrón simple} es uno de los modelos fundamentales en el campo del aprendizaje automático y representa una de las primeras formas de redes neuronales artificiales. Desarrollado por Frank Rosenblatt a finales de la década de 1950, el perceptrón simple constituye un clasificador binario que, mediante una combinación lineal de entradas ponderadas, busca establecer un límite de decisión para separar dos clases.
 
-donde:
-- \( P(C|X) \) es la probabilidad posterior de la clase \( C \) dado los datos \( X \).
-- \( P(X|C) \) es la probabilidad de observar los datos \( X \) dado que pertenecen a la clase \( C \).
-- \( P(C) \) es la probabilidad a priori de la clase \( C \).
-- \( P(X) \) es la probabilidad de los datos \( X \).
+Este modelo se basa en un proceso de aprendizaje supervisado en el que ajusta sus pesos internos mediante un algoritmo de retroalimentación, generalmente basado en la regla delta. Cada entrada del perceptrón se multiplica por un peso, se suma un sesgo (o término de polarización) y el resultado se pasa a través de una función de activación, que usualmente es una función escalón. Si el resultado excede un umbral determinado, se clasifica en una clase; de lo contrario, en la otra.
 
-\subsection{Clasificador Bayesiano Ingenuo}
+El perceptrón simple es capaz de resolver únicamente problemas linealmente separables, lo que implica que los datos deben poder dividirse mediante una línea (o un hiperplano en dimensiones superiores). Esta limitación, señalada por Minsky y Papert en su libro Perceptrons (1969), motivó el desarrollo de arquitecturas de redes más complejas, capaces de manejar problemas no linealmente separables, como las redes neuronales multicapa.
 
-El \textbf{clasificador bayesiano ingenuo} (Naive Bayes) es una variante simplificada y popular del clasificador bayesiano que asume que todas las características son independientes entre sí, dado el valor de la clase. Aunque esta suposición de independencia rara vez se cumple en la realidad, el clasificador bayesiano ingenuo ha demostrado ser altamente eficaz en una amplia gama de aplicaciones, incluyendo la clasificación de texto, el filtrado de spam, el análisis de sentimientos y el diagnóstico médico.
+A pesar de su simplicidad, el perceptrón simple sentó las bases para el desarrollo de modelos más avanzados de aprendizaje profundo y se reconoce como un paso crucial en la evolución de la inteligencia artificial y la teoría de redes neuronales.
 
-El adjetivo `ingenuo' se refiere a la fuerte hipótesis de independencia que hace el modelo. A pesar de esta limitación, Naive Bayes funciona bien debido a su simplicidad, rapidez y eficacia en contextos en los que muchas otras técnicas se complicarían o resultarían menos efectivas.
-
-El proceso de clasificación con Naive Bayes implica calcular la probabilidad de que una instancia dada pertenezca a una clase específica utilizando las probabilidades individuales de sus características. Se selecciona la clase con la mayor probabilidad. La eficiencia de Naive Bayes y su capacidad para manejar tanto características numéricas como categóricas lo convierten en una opción atractiva para problemas de clasificación supervisada.
-
-En particular, los datasets usados ya presentan las etiquetas mínimas necesarias para realizar predicciones, por lo que nos apegamos a usar la misma cantidad de características `k' que contienen. Los datasets son `iris', `wine' y `mushroom' o `agaricus-lepiota'
-
-\subsection{Métodos de división de datos}
-En esta práctica se usaron 3 métodos de división de datos para entrenamiento y prueba:
-
-\subsubsection{Estratificación}
-
-La \textbf{estratificación} es una técnica utilizada para mantener la proporción de las clases en los conjuntos de entrenamiento y prueba durante la partición de los datos. Esto es especialmente útil cuando las clases están desbalanceadas, es decir, cuando algunas categorías tienen muchas más observaciones que otras. La estratificación garantiza que cada subconjunto de datos mantenga la misma distribución de clases que el conjunto original, proporcionando una evaluación más representativa del rendimiento del modelo.
+\section{Técnicas de separación de dataset}
 
 \subsubsection{Validación Leave-One-Out (LOO)}
 
@@ -103,47 +90,30 @@ La \textbf{validación Leave-One-Out (LOO)} es un caso particular de validación
 
 La \textbf{validación cruzada de n-fold} implica dividir el conjunto de datos en \(n\) subconjuntos (o `folds') de aproximadamente el mismo tamaño. En cada iteración, uno de estos subconjuntos se utiliza como conjunto de prueba y el resto como conjunto de entrenamiento. Este proceso se repite \(n\) veces, con cada subconjunto utilizado como conjunto de prueba una vez. El rendimiento se evalúa promediando las métricas obtenidas en cada iteración. Este método proporciona un equilibrio entre la cantidad de datos de entrenamiento disponibles y el tiempo computacional, y su versión más común es la \textit{10-fold cross-validation}.
 
+\section{Comparativa}
+SMOTE mejora el equilibrio de clases, lo que a menudo resulta en mejores métricas de rendimiento para clasificadores; fácil de implementar. Puede generar datos sintéticos no representativos o causar sobreajuste en casos extremos.
+
+El perceptrón simple es rápido y eficiente para problemas linealmente separables; buena base para entender modelos de clasificación más complejos. No funciona bien con datos no linealmente separables o con problemas complejos de múltiples clases sin modificaciones.
+
+El 1NN tiene la capacidad para clasificar conjuntos de datos con límites de decisión complejos; flexible y no requiere suposiciones sobre la distribución de los datos. Sufre en presencia de ruido, puede ser computacionalmente costoso con grandes conjuntos de datos, y sufre más cuando hay desequilibrio de clases si no se combina con técnicas como SMOTE
 
    
     \section{Desarrollo}
     
-    El clasificador bayesiano, como se observa en los resultados obtenidos, muestra un alto nivel de precisión en los conjuntos de datos Iris, Wine y Mushroom, tanto con la validación mediante particionado estratificado como con la técnica Leave-One-Out. 
+    Los resultados obtenidos son los siguientes: 
 
-    \begin{itemize}
-        \item \textbf{Precisión general}: En el caso del particionado estratificado, la precisión fue consistentemente alta: alrededor de $0.911$ para Iris, $0.981$ para Wine y $0.998$ para Mushroom. Por otro lado, con Leave-One-Out, la precisión promedio alcanzó $0.953$ para Iris, $0.966$ para Wine y $0.997$ para Mushroom, lo que confirma la robustez del modelo bayesiano en diversos contextos.
-        \item \textbf{Matriz de confusión con particionado estratificado}: Esta matriz muestra los aciertos y errores de clasificación. Por ejemplo, para el conjunto de datos Iris, los valores indican la cantidad de elementos correctamente clasificados y los errores entre las clases. Las matrices confusión para los conjuntos de datos Wine y Mushroom presentan un muy bajo número de errores de clasificación, evidenciando la alta capacidad predictiva.
-        \item \textbf{Matriz de confusión con Leave-One-Out}: La matriz de confusión acumulada muestra cómo el clasificador mantiene un buen rendimiento al evaluar cada muestra individualmente. Los valores indican que las predicciones erróneas son mínimas en comparación con las predicciones correctas, confirmando su eficacia.
-    \end{itemize}
-    \begin{figure}[!h]
+    \begin{figure}[!ht]
         \centering
-        \includegraphics[scale=0.5]{Estratificado.jpg}
-        \caption{Resultados de la clasificación con el Bayesiano Ingenuo con estratificación 30/70.}
+        \includegraphics[scale=0.8]{Resultados_1.png}
+        \caption{Resultados conjuntos obtenidos. Parte 1.}
     \end{figure}
-    \begin{figure}[!h]
+    \newpage
+    
+    \begin{figure}[!ht]
         \centering
-        \includegraphics[scale=0.8]{Leave-one-out.jpg}
-        \caption{Resultados de la clasificación con el Bayesiano Ingenuo con método Leave-One-Out.}
+        \includegraphics[scale=0.6]{Resultados_2.png}
+        \caption{Resultados conjuntos. Parte 2.}
     \end{figure}
-
-    \begin{figure}[!h]
-        \centering
-        \includegraphics[scale=0.45]{10-fold-iris-1.jpg}
-        \includegraphics[scale=0.6]{10-fold-iris-2.jpg}
-        \caption{Resultados de la clasificación con el Bayesiano Ingenuo con 10-fold cross-validation en Iris}
-    \end{figure}
-    \begin{figure}[!h]
-        \centering
-        \includegraphics[scale=0.4]{10-fold-wine-1.jpg}
-        \includegraphics[scale=0.6]{10-fold-wine-2.jpg}
-        \caption{Resultados de la clasificación con el Bayesiano Ingenuo con 10-fold cross-validation en Wine}
-    \end{figure}
-
-    \begin{figure}[!h]
-        \centering
-        \includegraphics[scale=0.4]{10-fold-mushroom-1.jpg}
-        \includegraphics[scale=0.6]{10-fold-mushroom-2.jpg}
-        \caption{Resultados de la clasificación con el Bayesiano Ingenuo con 10-fold cross-validation en Mushroom}
-    \end{figure}    
     
     \input{conclusiones.tex}
     
